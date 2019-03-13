@@ -1,4 +1,5 @@
-# Software Engineering Project Bootstrapped using https://github.com/FullstackAcademy/boilermaker/
+# Software Engineering Project
 
 # Group Members:
+
 # CentralTime
