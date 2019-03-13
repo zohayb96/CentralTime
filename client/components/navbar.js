@@ -27,9 +27,6 @@ const Navbar = ({handleClick, isLoggedIn}) => (
             </Link>
           </Menu.Item>
           <Menu.Item>
-            <Link to="/Leaderboard">Leaderboard</Link>
-          </Menu.Item>
-          <Menu.Item>
             <a href="#" onClick={handleClick}>
               Logout
             </a>

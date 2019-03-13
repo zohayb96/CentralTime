@@ -47,6 +47,14 @@ class UserHome extends Component {
       console.log(this.state)
     }
 
+    const viewLeaderBoard = () => {
+      this.setState({
+        viewState: 'leaderboard',
+        displayDataType: 'leaderboard'
+      })
+      console.log(this.state)
+    }
+
     const {email} = this.props
 
     // DATA VALUES TO BE CHANGED AS SYNCED FROM DATABASE
@@ -64,6 +72,12 @@ class UserHome extends Component {
       {id: 3, entryName: 'event1'},
       {id: 4, entryName: 'buy watch'}
     ]
+    const userData = [
+      {id: 1, name: 'zohayb'},
+      {id: 2, name: 'yasmin'},
+      {id: 3, name: 'john'},
+      {id: 4, name: 'burenkhuu '}
+    ]
 
     return (
       <center>
@@ -74,21 +88,21 @@ class UserHome extends Component {
             <div className="ui secondary menu">
               >
               <button
-                className="ui blue button"
+                className="ui green button"
                 type="button"
                 onClick={() => showEvents()}
               >
                 Events
               </button>
               <button
-                className="ui blue button"
+                className="ui red button"
                 type="button"
                 onClick={() => showTasks()}
               >
                 Tasks
               </button>
               <button
-                className="ui blue button"
+                className="ui purple button"
                 type="button"
                 onClick={() => showBoth()}
               >
@@ -108,30 +122,39 @@ class UserHome extends Component {
               >
                 List View
               </button>
+              <button
+                className="ui orange button"
+                type="button"
+                onClick={() => viewLeaderBoard()}
+              >
+                View LeaderBoard
+              </button>
             </div>
           </div>
         </div>
         <div>
-          {this.state.viewState === 'calendar' ? (
+          {this.state.viewState === 'leaderboard' ? (
+            <h1>LeaderBoard</h1>
+          ) : this.state.viewState === 'calendar' ? (
             <h1>Calendar</h1>
           ) : (
             <h1>List</h1>
           )}
-          {this.state.displayDataType === 'tasks' ? (
-            tasksData.map(task => {
-              return <h1 key={task.id}>{task.taskName}</h1>
-            })
-          ) : this.state.displayDataType === 'events' ? (
-            eventsData.map(events => {
-              return <h1 key={events.id}>{events.eventName}</h1>
-            })
-          ) : this.state.displayDataType === 'both' ? (
-            bothData.map(data => {
-              return <h1 key={data.id}>{data.entryName}</h1>
-            })
-          ) : (
-            <h1>Please Pick A View</h1>
-          )}
+          {this.state.displayDataType === 'tasks'
+            ? tasksData.map(task => {
+                return <h1 key={task.id}>{task.taskName}</h1>
+              })
+            : this.state.displayDataType === 'events'
+              ? eventsData.map(events => {
+                  return <h1 key={events.id}>{events.eventName}</h1>
+                })
+              : this.state.displayDataType === 'both'
+                ? bothData.map(data => {
+                    return <h1 key={data.id}>{data.entryName}</h1>
+                  })
+                : userData.map(user => {
+                    return <h1 key={user.id}>{user.name}</h1>
+                  })}
         </div>
       </center>
     )
