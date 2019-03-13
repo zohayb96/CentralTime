@@ -13,7 +13,7 @@ const AuthForm = props => {
   return (
     <center>
       <Image
-        src="https://wallpaper-house.com/data/out/9/wallpaper2you_300629.jpg"
+        src="https://i.ibb.co/GQjY48z/centraltimecover.png"
         verticalAlign="middle"
         centered
         className="ui fluid image"
