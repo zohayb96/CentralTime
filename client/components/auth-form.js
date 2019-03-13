@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
+import {Image} from 'semantic-ui-react'
 import {auth} from '../store'
 
 /**
@@ -10,26 +11,37 @@ const AuthForm = props => {
   const {name, displayName, handleSubmit, error} = props
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} name={name}>
-        <div>
-          <label htmlFor="email">
-            <small>Email</small>
-          </label>
-          <input name="email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="password">
-            <small>Password</small>
-          </label>
-          <input name="password" type="password" />
-        </div>
-        <div>
-          <button type="submit">{displayName}</button>
-        </div>
-        {error && error.response && <div> {error.response.data} </div>}
-      </form>
-    </div>
+    <center>
+      <Image
+        src="https://wallpaper-house.com/data/out/9/wallpaper2you_300629.jpg"
+        verticalAlign="middle"
+        centered
+        className="ui fluid image"
+      />
+      <div className="loginForm">
+        <form onSubmit={handleSubmit} name={name}>
+          <div className="ui form segment">
+            <div className="field">
+              <label>Username</label>
+              <div className="ui left labeled icon input">
+                <input name="email" type="text" />
+                <i className="user icon" />
+              </div>
+            </div>
+            <div className="field">
+              <label>Password</label>
+              <div className="ui left labeled icon input">
+                <input name="password" type="password" />
+                <i className="lock icon" />
+              </div>
+            </div>
+            <div />
+            <button type="submit">{displayName}</button>
+          </div>
+          {error && error.response && <div> {error.response.data} </div>}
+        </form>
+      </div>
+    </center>
   )
 }
 

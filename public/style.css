@@ -19,3 +19,11 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.calendar {
+  float: left;
+  width: 100%;
+}
+.calendar div {
+  float: left;
+}

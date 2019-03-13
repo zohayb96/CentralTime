@@ -3,29 +3,41 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import {Menu} from 'semantic-ui-react'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
-  <div>
-    <h1>Central Time</h1>
-    <nav>
-      {isLoggedIn ? (
-        <div>
-          {/* The navbar will show these links after you log in */}
-          <Link to="/home">Home</Link>
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <div>
-          {/* The navbar will show these links before you log in */}
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Sign Up</Link>
-        </div>
-      )}
-    </nav>
-    <hr />
-  </div>
+  <React.Fragment>
+    {!isLoggedIn ? (
+      <div className="left menu">
+        <Menu>
+          <Menu.Item>
+            <Link to="/Login">Login</Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to="/Signup">Sign Up</Link>
+          </Menu.Item>
+        </Menu>
+      </div>
+    ) : (
+      <div className="right menu">
+        <Menu>
+          <Menu.Item>
+            <Link to="/home">
+              <i className="home icon" />
+            </Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to="/Leaderboard">Leaderboard</Link>
+          </Menu.Item>
+          <Menu.Item>
+            <a href="#" onClick={handleClick}>
+              Logout
+            </a>
+          </Menu.Item>
+        </Menu>
+      </div>
+    )}
+  </React.Fragment>
 )
 
 /**
