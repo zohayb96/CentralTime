@@ -7,4 +7,9 @@ John
 Yasmin
 Zohayb
 
+# Instructions To Run
+
+npm install
+npm run start-dev
+
 # CentralTime
