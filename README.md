@@ -2,12 +2,9 @@
 
 # Group Members:
 
-# Burenkhuu
-
-# John
-
-# Yasmin
-
-# Zohayb
+Burenkhuu
+John
+Yasmin
+Zohayb
 
 # CentralTime
