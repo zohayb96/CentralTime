@@ -74,6 +74,10 @@ class UserHome extends Component {
       console.log(this.state)
     }
 
+    const deleteSelected = () => {
+      console.log(this.state)
+    }
+
     const {username} = this.props
 
     // DATA VALUES TO BE CHANGED AS SYNCED FROM DATABASE
@@ -147,6 +151,20 @@ class UserHome extends Component {
               >
                 View LeaderBoard
               </button>
+              <button
+                className="ui pink button"
+                type="button"
+                // onClick={() => viewLeaderBoard()}
+              >
+                Add Task
+              </button>
+              <button
+                className="ui pink button"
+                type="button"
+                // onClick={() => viewLeaderBoard()}
+              >
+                Add Event
+              </button>
             </div>
           </div>
         </div>
@@ -178,25 +196,32 @@ class UserHome extends Component {
                           <div className="item">
                             Complete: {data.task.complete.toString()}
                           </div>
-                        </div>
-                        <div className="item">
-                          No. of Reminders {data.reminders.length}
-                        </div>
-                        {data.reminders.map(reminder => {
-                          return (
-                            <div key={reminder.id}>
-                              <div className="item">
-                                Reminder Date:
-                                {moment(reminder.reminderDate).format(
-                                  'MMMM Do YYYY, h:mm:ss a'
-                                )};
+                          <div className="item">
+                            No. of Reminders {data.reminders.length}
+                          </div>
+                          {data.reminders.map(reminder => {
+                            return (
+                              <div key={reminder.id}>
+                                <div className="item">
+                                  Reminder Date:
+                                  {moment(reminder.reminderDate).format(
+                                    'MMMM Do YYYY, h:mm:ss a'
+                                  )};
+                                </div>
+                                <div className="item">
+                                  Reminder Note: {reminder.reminderNote}
+                                </div>
                               </div>
-                              <div className="item">
-                                Reminder Note: {reminder.reminderNote}
-                              </div>
-                            </div>
-                          )
-                        })}
+                            )
+                          })}
+                        </div>
+                        <button
+                          className="ui red button"
+                          type="button"
+                          onClick={() => deleteSelected()}
+                        >
+                          X
+                        </button>
                       </div>
                     ) : (
                       <div />
@@ -249,6 +274,13 @@ class UserHome extends Component {
                               )
                             })}
                           </div>
+                          <button
+                            className="ui red button"
+                            type="button"
+                            onClick={() => deleteSelected()}
+                          >
+                            X
+                          </button>
                         </div>
                       ) : (
                         <div />
@@ -285,9 +317,7 @@ class UserHome extends Component {
                               </div>
                             </div>
                           ) : (
-                            <div>
-                              <div className="item">Not an event</div>
-                            </div>
+                            <div />
                           )}
                           {data.task ? (
                             <div>
@@ -300,31 +330,36 @@ class UserHome extends Component {
                               <div className="item">
                                 Complete: {data.task.complete.toString()}
                               </div>
+                              <div className="item">
+                                No. of Reminders {data.reminders.length}
+                              </div>
+                              {data.reminders.map(reminder => {
+                                return (
+                                  <div key={reminder.id}>
+                                    <div className="item">
+                                      Reminder Date:
+                                      {moment(reminder.reminderDate).format(
+                                        'MMMM Do YYYY, h:mm:ss a'
+                                      )};
+                                    </div>
+                                    <div className="item">
+                                      Reminder Note: {reminder.reminderNote}
+                                    </div>
+                                  </div>
+                                )
+                              })}
                             </div>
                           ) : (
-                            <div>
-                              <div className="item">Not an task</div>
-                            </div>
+                            <div />
                           )}
-                          <div className="item">
-                            No. of Reminders {data.reminders.length}
-                          </div>
-                          {data.reminders.map(reminder => {
-                            return (
-                              <div key={reminder.id}>
-                                <div className="item">
-                                  Reminder Date:
-                                  {moment(reminder.reminderDate).format(
-                                    'MMMM Do YYYY, h:mm:ss a'
-                                  )};
-                                </div>
-                                <div className="item">
-                                  Reminder Note: {reminder.reminderNote}
-                                </div>
-                              </div>
-                            )
-                          })}
                         </div>
+                        <button
+                          className="ui red button"
+                          type="button"
+                          onClick={() => deleteSelected()}
+                        >
+                          X
+                        </button>
                       </div>
                     )
                   })

@@ -8,30 +8,24 @@ import {Menu} from 'semantic-ui-react'
 const Navbar = ({handleClick, isLoggedIn}) => (
   <React.Fragment>
     {!isLoggedIn ? (
-      <div className="left menu">
-        <Menu>
-          <Menu.Item>
-            <Link to="/Login">Login</Link>
-          </Menu.Item>
-          <Menu.Item>
-            <Link to="/Signup">Sign Up</Link>
-          </Menu.Item>
-        </Menu>
+      <div className="ui secondary  menu">
+        <a className="item">
+          <Link to="/Login">Login</Link>
+        </a>
+        <a className="item">
+          <Link to="/Signup">Sign Up</Link>
+        </a>
       </div>
     ) : (
-      <div className="right menu">
-        <Menu>
-          <Menu.Item>
-            <Link to="/home">
-              <i className="home icon" />
-            </Link>
-          </Menu.Item>
-          <Menu.Item>
-            <a href="#" onClick={handleClick}>
-              Logout
-            </a>
-          </Menu.Item>
-        </Menu>
+      <div className="ui secondary  menu">
+        <a className="item">
+          <Link to="/home">
+            <i className="home icon" />
+          </Link>
+        </a>
+        <a href="#" onClick={handleClick} className="item">
+          Logout
+        </a>
       </div>
     )}
   </React.Fragment>
