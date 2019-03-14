@@ -13,7 +13,8 @@ class UserHome extends Component {
       tasks: [],
       events: [],
       entries: [],
-      leaderboard: []
+      leaderboard: [],
+      viewReminders: false
     }
   }
 
@@ -45,6 +46,14 @@ class UserHome extends Component {
       this.setState({
         viewState: 'calendar'
       })
+    }
+
+    const showReminders = () => {
+      console.log('showReminder pressed ')
+      this.setState(prevState => ({
+        viewReminders: !prevState.viewReminders
+      }))
+      console.log(this.state)
     }
 
     const showEvents = () => {
@@ -105,7 +114,7 @@ class UserHome extends Component {
     // ]
 
     return (
-      <center>
+      <div>
         <div>
           <h1>Central Time</h1>
           <h3>Welcome: {username} :)</h3>
@@ -172,7 +181,7 @@ class UserHome extends Component {
         </div>
         <div>
           {this.state.viewState === 'leaderboard' ? (
-            <h1>LeaderBoard</h1>
+            <div />
           ) : this.state.viewState === 'calendar' ? (
             <h1>Calendar</h1>
           ) : (
@@ -182,48 +191,62 @@ class UserHome extends Component {
             ? this.state.entries.map(data => {
                 return (
                   <div className="item" key={data.id}>
+                    <div className="header">Entry Name: {data.entryName}</div>
                     {data.task ? (
                       <div>
-                        <h1>Entry Name: {data.entryName}</h1>
-                        <div className="ui list">
+                        <div className="ui celled list">
                           <div className="item">
-                            Entry Description: {data.entryDescription}
-                          </div>
-                          <div className="item">
-                            Deadline Date:
-                            {moment(data.task.deadlineDate).format(
-                              'MMMM Do YYYY, h:mm:ss a'
-                            )}
-                          </div>
-                          <div className="item">
-                            Complete: {data.task.complete.toString()}
-                          </div>
-                          <div className="item">
-                            No. of Reminders {data.reminders.length}
-                          </div>
-                          {data.reminders.map(reminder => {
-                            return (
-                              <div key={reminder.id}>
-                                <div className="item">
-                                  Reminder Date:
-                                  {moment(reminder.reminderDate).format(
-                                    'MMMM Do YYYY, h:mm:ss a'
-                                  )};
-                                </div>
-                                <div className="item">
-                                  Reminder Note: {reminder.reminderNote}
-                                </div>
+                            <div className="right floated content">
+                              <div className="ui button">Edit</div>
+                              <div className="ui button">Remove</div>
+                              <div
+                                className="ui button"
+                                onClick={() => showReminders()}
+                              >
+                                Reminders
                               </div>
-                            )
-                          })}
+                            </div>
+                            <div className="header">
+                              Entry Name: {data.entryName}
+                            </div>
+                            <div className="content">
+                              Entry Description: {data.entryDescription}
+                            </div>
+                            <div className="content">
+                              Deadline Date:
+                              {moment(data.task.deadlineDate).format(
+                                'MMMM Do YYYY, h:mm:ss a'
+                              )}
+                            </div>
+                            <div className="content">
+                              Complete: {data.task.complete.toString()}
+                            </div>
+                            <div>
+                              <div className="header">
+                                No. of Reminders {data.reminders.length}
+                              </div>
+                              {this.state.viewReminders === false ? (
+                                data.reminders.map(reminder => {
+                                  return (
+                                    <div key={reminder.id}>
+                                      <div className="content">
+                                        Reminder Date:
+                                        {moment(reminder.reminderDate).format(
+                                          'MMMM Do YYYY, h:mm:ss a'
+                                        )};
+                                      </div>
+                                      <div className="content">
+                                        Reminder Note: {reminder.reminderNote}
+                                      </div>
+                                    </div>
+                                  )
+                                })
+                              ) : (
+                                <div />
+                              )}
+                            </div>
+                          </div>
                         </div>
-                        <button
-                          className="ui red button"
-                          type="button"
-                          onClick={() => deleteSelected()}
-                        >
-                          X
-                        </button>
                       </div>
                     ) : (
                       <div />
@@ -237,52 +260,62 @@ class UserHome extends Component {
                     <div className="item" key={data.id}>
                       {data.event ? (
                         <div>
-                          <h1>Entry Name: {data.entryName}</h1>
-                          <div className="ui list">
+                          <div className="ui celled list">
                             <div className="item">
-                              Entry Description: {data.entryDescription}
-                            </div>
-                            <div className="item">
-                              Start Date:
-                              {moment(data.event.eventStartDate).format(
-                                'MMMM Do YYYY, h:mm:ss a'
-                              )}
-                            </div>
-                            <div className="item">
-                              End Date:
-                              {moment(data.event.eventEndDate).format(
-                                'MMMM Do YYYY, h:mm:ss a'
-                              )}
-                            </div>
-                            <div className="item">
-                              Location: {data.event.location}
-                            </div>
-                            <div className="item">
-                              No. of Reminders {data.reminders.length}
-                            </div>
-                            {data.reminders.map(reminder => {
-                              return (
-                                <div key={reminder.id}>
-                                  <div className="item">
-                                    Reminder Date:
-                                    {moment(reminder.reminderDate).format(
-                                      'MMMM Do YYYY, h:mm:ss a'
-                                    )};
-                                  </div>
-                                  <div className="item">
-                                    Reminder Note: {reminder.reminderNote}
-                                  </div>
+                              <div className="right floated content">
+                                <div className="ui button">Edit</div>
+                                <div className="ui button">Remove</div>
+                                <div
+                                  className="ui button"
+                                  onClick={() => showReminders()}
+                                >
+                                  Reminders
                                 </div>
-                              )
-                            })}
+                              </div>
+                              <div className="header">
+                                Entry Name: {data.entryName}
+                              </div>
+                              <div className="content">
+                                Entry Description: {data.entryDescription}
+                              </div>
+                              <div className="content">
+                                Start Date:
+                                {moment(data.event.eventStartDate).format(
+                                  'MMMM Do YYYY, h:mm:ss a'
+                                )}
+                              </div>
+                              <div className="content">
+                                End Date:{moment(
+                                  data.event.eventEndDate
+                                ).format('MMMM Do YYYY, h:mm:ss a')}
+                              </div>
+                              <div className="content">
+                                Location: {data.event.location}
+                              </div>
+                              <div className="header">
+                                No. of Reminders {data.reminders.length}
+                              </div>
+                              {this.state.viewReminders === false ? (
+                                data.reminders.map(reminder => {
+                                  return (
+                                    <div key={reminder.id}>
+                                      <div className="content">
+                                        Reminder Date:
+                                        {moment(reminder.reminderDate).format(
+                                          'MMMM Do YYYY, h:mm:ss a'
+                                        )};
+                                      </div>
+                                      <div className="content">
+                                        Reminder Note: {reminder.reminderNote}
+                                      </div>
+                                    </div>
+                                  )
+                                })
+                              ) : (
+                                <div />
+                              )}
+                            </div>
                           </div>
-                          <button
-                            className="ui red button"
-                            type="button"
-                            onClick={() => deleteSelected()}
-                          >
-                            X
-                          </button>
                         </div>
                       ) : (
                         <div />
@@ -292,76 +325,132 @@ class UserHome extends Component {
                 })
               : this.state.displayDataType === 'both'
                 ? this.state.entries.map(data => {
-                    //// EVENTUALLY MOVE TO OWN STATELESS COMPONENT - DONT FORGET lol
                     return (
                       <div className="item" key={data.id}>
-                        <h1>Entry Name: {data.entryName}</h1>
                         <div className="ui list">
-                          <div className="item">
-                            Entry Description: {data.entryDescription}
-                          </div>
-                          {data.event ? (
-                            <div>
+                          <div>
+                            <div className="ui celled list">
                               <div className="item">
-                                Start Date:
-                                {moment(data.event.eventStartDate).format(
-                                  'MMMM Do YYYY, h:mm:ss a'
+                                <div className="right floated content">
+                                  <div className="ui button">Edit</div>
+                                  <div className="ui button">Remove</div>
+                                  <div
+                                    className="ui button"
+                                    onClick={() => showReminders()}
+                                  >
+                                    Reminders
+                                  </div>
+                                </div>
+                                <div className="header">
+                                  Entry Name: {data.entryName}
+                                </div>
+                                <div className="content">
+                                  Entry Description: {data.entryDescription}
+                                </div>
+                                <div className="content">
+                                  Start Date:
+                                  {moment(data.event.eventStartDate).format(
+                                    'MMMM Do YYYY, h:mm:ss a'
+                                  )}
+                                </div>
+                                <div className="content">
+                                  End Date:{moment(
+                                    data.event.eventEndDate
+                                  ).format('MMMM Do YYYY, h:mm:ss a')}
+                                </div>
+                                <div className="content">
+                                  Location: {data.event.location}
+                                </div>
+                                <div className="header">
+                                  No. of Reminders {data.reminders.length}
+                                </div>
+                                {this.state.viewReminders === false ? (
+                                  data.reminders.map(reminder => {
+                                    return (
+                                      <div key={reminder.id}>
+                                        <div className="content">
+                                          Reminder Date:
+                                          {moment(reminder.reminderDate).format(
+                                            'MMMM Do YYYY, h:mm:ss a'
+                                          )};
+                                        </div>
+                                        <div className="content">
+                                          Reminder Note: {reminder.reminderNote}
+                                        </div>
+                                      </div>
+                                    )
+                                  })
+                                ) : (
+                                  <div />
                                 )}
-                              </div>
-                              <div className="item">
-                                End Date:
-                                {moment(data.event.eventEndDate).format(
-                                  'MMMM Do YYYY, h:mm:ss a'
-                                )}
-                              </div>
-                              <div className="item">
-                                Location: {data.event.location}
                               </div>
                             </div>
-                          ) : (
-                            <div />
-                          )}
-                          {data.task ? (
-                            <div>
-                              <div className="item">
-                                Deadline Date:
-                                {moment(data.task.deadlineDate).format(
-                                  'MMMM Do YYYY, h:mm:ss a'
-                                )}
-                              </div>
-                              <div className="item">
-                                Complete: {data.task.complete.toString()}
-                              </div>
-                              <div className="item">
-                                No. of Reminders {data.reminders.length}
-                              </div>
-                              {data.reminders.map(reminder => {
-                                return (
-                                  <div key={reminder.id}>
-                                    <div className="item">
-                                      Reminder Date:
-                                      {moment(reminder.reminderDate).format(
-                                        'MMMM Do YYYY, h:mm:ss a'
-                                      )};
+                          </div>
+                          <div className="item" key={data.id}>
+                            {data.task ? (
+                              <div>
+                                <div className="ui celled list">
+                                  <div className="item">
+                                    <div className="right floated content">
+                                      <div className="ui button">Edit</div>
+                                      <div className="ui button">Remove</div>
+                                      <div
+                                        className="ui button"
+                                        onClick={() => showReminders()}
+                                      >
+                                        Reminders
+                                      </div>
                                     </div>
-                                    <div className="item">
-                                      Reminder Note: {reminder.reminderNote}
+                                    <div className="header">
+                                      Entry Name: {data.entryName}
+                                    </div>
+                                    <div className="content">
+                                      Entry Description: {data.entryDescription}
+                                    </div>
+                                    <div className="content">
+                                      Deadline Date:
+                                      {moment(data.task.deadlineDate).format(
+                                        'MMMM Do YYYY, h:mm:ss a'
+                                      )}
+                                    </div>
+                                    <div className="content">
+                                      Complete: {data.task.complete.toString()}
+                                    </div>
+                                    <div>
+                                      <div className="header">
+                                        No. of Reminders {data.reminders.length}
+                                      </div>
+                                      {this.state.viewReminders === false ? (
+                                        data.reminders.map(reminder => {
+                                          return (
+                                            <div key={reminder.id}>
+                                              <div className="content">
+                                                Reminder Date:
+                                                {moment(
+                                                  reminder.reminderDate
+                                                ).format(
+                                                  'MMMM Do YYYY, h:mm:ss a'
+                                                )};
+                                              </div>
+                                              <div className="content">
+                                                Reminder Note:{' '}
+                                                {reminder.reminderNote}
+                                              </div>
+                                            </div>
+                                          )
+                                        })
+                                      ) : (
+                                        <div />
+                                      )}
                                     </div>
                                   </div>
-                                )
-                              })}
-                            </div>
-                          ) : (
-                            <div />
-                          )}
+                                </div>
+                              </div>
+                            ) : (
+                              <div />
+                            )}
+                          </div>
                         </div>
-                        <button
-                          className="ui red button"
-                          type="button"
-                          onClick={() => deleteSelected()}
-                        >
-                          X
-                        </button>
                       </div>
                     )
                   })
@@ -374,7 +463,7 @@ class UserHome extends Component {
                     )
                   })}
         </div>
-      </center>
+      </div>
     )
   }
 }
