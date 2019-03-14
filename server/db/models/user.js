@@ -27,7 +27,8 @@ const User = db.define('user', {
     type: Sequelize.STRING
   },
   points: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 })
 
