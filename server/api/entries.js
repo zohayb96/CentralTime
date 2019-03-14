@@ -1,11 +1,11 @@
 // api/entries.js
 const router = require('express').Router()
-const {Entry, Task, Events, Reminder} = require('../db/models')
+const {Entries, Task, Events, Reminder} = require('../db/models')
 
 // matches GET requests to /api/entries/
 router.get('/', async function(req, res, next) {
   try {
-    const entries = await Entry.findAll({
+    const entries = await Entries.findAll({
       include: [{model: Reminder}, {model: Events}]
     })
     res.json(entries)
@@ -21,7 +21,7 @@ router.post('/', function(req, res, next) {
 router.get('/:id', async function(req, res, next) {
   const user = req.params.id
   try {
-    const entries = await Entry.findAll({
+    const entries = await Entries.findAll({
       include: [{model: Reminder}, {model: Events}, {model: Task}],
       where: {
         userId: user

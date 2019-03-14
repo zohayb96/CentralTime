@@ -1,6 +1,6 @@
 // api/tasks.js
 const router = require('express').Router()
-const {Task, Entry} = require('../db/models')
+const {Task, Entries} = require('../db/models')
 
 // matches GET requests to /api/entries/
 router.get('/', async function(req, res, next) {

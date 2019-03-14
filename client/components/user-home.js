@@ -21,14 +21,16 @@ class UserHome extends Component {
     const allEntries = await axios.get(
       `http://localhost:8080/api/entries/${this.props.user.id}`
     )
-    const allTasks = await axios.get(
-      `http://localhost:8080/api/entries/${this.props.user.id}`
-    )
-    const allEvents = await axios.get(
-      `http://localhost:8080/api/entries/${this.props.user.id}`
-    )
+    // const allTasks = await axios.get(
+    //   `http://localhost:8080/api/entries/${this.props.user.id}`
+    // )
+    // const allEvents = await axios.get(
+    //   `http://localhost:8080/api/entries/${this.props.user.id}`
+    // )
+    const topUsers = await axios.get(`http://localhost:8080/api/users`)
     this.setState({
-      entries: allEntries.data
+      entries: allEntries.data,
+      leaderboard: topUsers.data
     })
   }
 
@@ -95,12 +97,12 @@ class UserHome extends Component {
     //   {id: 3, entryName: 'event1'},
     //   {id: 4, entryName: 'buy watch'}
     // ]
-    const userData = [
-      {id: 1, name: 'zohayb'},
-      {id: 2, name: 'yasmin'},
-      {id: 3, name: 'john'},
-      {id: 4, name: 'burenkhuu '}
-    ]
+    // const userData = [
+    //   {id: 1, name: 'zohayb'},
+    //   {id: 2, name: 'yasmin'},
+    //   {id: 3, name: 'john'},
+    //   {id: 4, name: 'burenkhuu '}
+    // ]
 
     return (
       <center>
@@ -363,8 +365,13 @@ class UserHome extends Component {
                       </div>
                     )
                   })
-                : userData.map(user => {
-                    return <h1 key={user.id}>{user.name}</h1>
+                : this.state.leaderboard.map((user, index) => {
+                    return (
+                      <h1 key={user.id}>
+                        #{index + 1} Username: {user.username} - Points:
+                        {user.points}
+                      </h1>
+                    )
                   })}
         </div>
       </center>
