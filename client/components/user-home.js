@@ -1,17 +1,36 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import axios from 'axios'
+var moment = require('moment')
 
 class UserHome extends Component {
   constructor(props) {
     super(props)
     this.state = {
       viewState: 'calendar',
-      displayDataType: 'both'
+      displayDataType: 'both',
+      tasks: [],
+      events: [],
+      entries: [],
+      leaderboard: []
     }
   }
 
-  componentDidMount() {}
+  async componentDidMount() {
+    const allEntries = await axios.get(
+      `http://localhost:8080/api/entries/${this.props.user.id}`
+    )
+    const allTasks = await axios.get(
+      `http://localhost:8080/api/entries/${this.props.user.id}`
+    )
+    const allEvents = await axios.get(
+      `http://localhost:8080/api/entries/${this.props.user.id}`
+    )
+    this.setState({
+      entries: allEntries.data
+    })
+  }
 
   render() {
     const toggleList = () => {
@@ -55,23 +74,23 @@ class UserHome extends Component {
       console.log(this.state)
     }
 
-    const {email} = this.props
+    const {username} = this.props
 
     // DATA VALUES TO BE CHANGED AS SYNCED FROM DATABASE
-    const tasksData = [
-      {id: 1, taskName: 'task1'},
-      {id: 2, taskName: 'do laundry'}
-    ]
-    const eventsData = [
-      {id: 1, eventName: 'event1'},
-      {id: 2, eventName: 'buy watch'}
-    ]
-    const bothData = [
-      {id: 1, entryName: 'hello'},
-      {id: 2, entryName: 'bye'},
-      {id: 3, entryName: 'event1'},
-      {id: 4, entryName: 'buy watch'}
-    ]
+    // const tasksData = [
+    //   {id: 1, taskName: 'task1'},
+    //   {id: 2, taskName: 'do laundry'}
+    // ]
+    // const eventsData = [
+    //   {id: 1, eventName: 'event1'},
+    //   {id: 2, eventName: 'buy watch'}
+    // ]
+    // const bothData = [
+    //   {id: 1, entryName: 'hello'},
+    //   {id: 2, entryName: 'bye'},
+    //   {id: 3, entryName: 'event1'},
+    //   {id: 4, entryName: 'buy watch'}
+    // ]
     const userData = [
       {id: 1, name: 'zohayb'},
       {id: 2, name: 'yasmin'},
@@ -83,10 +102,9 @@ class UserHome extends Component {
       <center>
         <div>
           <h1>Central Time</h1>
-          <h3>Welcome: {email} :)</h3>
+          <h3>Welcome: {username} :)</h3>
           <div className="calendar">
             <div className="ui secondary menu">
-              >
               <button
                 className="ui green button"
                 type="button"
@@ -141,16 +159,174 @@ class UserHome extends Component {
             <h1>List</h1>
           )}
           {this.state.displayDataType === 'tasks'
-            ? tasksData.map(task => {
-                return <h1 key={task.id}>{task.taskName}</h1>
+            ? this.state.entries.map(data => {
+                return (
+                  <div className="item" key={data.id}>
+                    {data.task ? (
+                      <div>
+                        <h1>Entry Name: {data.entryName}</h1>
+                        <div className="ui list">
+                          <div className="item">
+                            Entry Description: {data.entryDescription}
+                          </div>
+                          <div className="item">
+                            Deadline Date:
+                            {moment(data.task.deadlineDate).format(
+                              'MMMM Do YYYY, h:mm:ss a'
+                            )}
+                          </div>
+                          <div className="item">
+                            Complete: {data.task.complete.toString()}
+                          </div>
+                        </div>
+                        <div className="item">
+                          No. of Reminders {data.reminders.length}
+                        </div>
+                        {data.reminders.map(reminder => {
+                          return (
+                            <div key={reminder.id}>
+                              <div className="item">
+                                Reminder Date:
+                                {moment(reminder.reminderDate).format(
+                                  'MMMM Do YYYY, h:mm:ss a'
+                                )};
+                              </div>
+                              <div className="item">
+                                Reminder Note: {reminder.reminderNote}
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <div />
+                    )}
+                  </div>
+                )
               })
             : this.state.displayDataType === 'events'
-              ? eventsData.map(events => {
-                  return <h1 key={events.id}>{events.eventName}</h1>
+              ? this.state.entries.map(data => {
+                  return (
+                    <div className="item" key={data.id}>
+                      {data.event ? (
+                        <div>
+                          <h1>Entry Name: {data.entryName}</h1>
+                          <div className="ui list">
+                            <div className="item">
+                              Entry Description: {data.entryDescription}
+                            </div>
+                            <div className="item">
+                              Start Date:
+                              {moment(data.event.eventStartDate).format(
+                                'MMMM Do YYYY, h:mm:ss a'
+                              )}
+                            </div>
+                            <div className="item">
+                              End Date:
+                              {moment(data.event.eventEndDate).format(
+                                'MMMM Do YYYY, h:mm:ss a'
+                              )}
+                            </div>
+                            <div className="item">
+                              Location: {data.event.location}
+                            </div>
+                            <div className="item">
+                              No. of Reminders {data.reminders.length}
+                            </div>
+                            {data.reminders.map(reminder => {
+                              return (
+                                <div key={reminder.id}>
+                                  <div className="item">
+                                    Reminder Date:
+                                    {moment(reminder.reminderDate).format(
+                                      'MMMM Do YYYY, h:mm:ss a'
+                                    )};
+                                  </div>
+                                  <div className="item">
+                                    Reminder Note: {reminder.reminderNote}
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      ) : (
+                        <div />
+                      )}
+                    </div>
+                  )
                 })
               : this.state.displayDataType === 'both'
-                ? bothData.map(data => {
-                    return <h1 key={data.id}>{data.entryName}</h1>
+                ? this.state.entries.map(data => {
+                    //// EVENTUALLY MOVE TO OWN STATELESS COMPONENT - DONT FORGET lol
+                    return (
+                      <div className="item" key={data.id}>
+                        <h1>Entry Name: {data.entryName}</h1>
+                        <div className="ui list">
+                          <div className="item">
+                            Entry Description: {data.entryDescription}
+                          </div>
+                          {data.event ? (
+                            <div>
+                              <div className="item">
+                                Start Date:
+                                {moment(data.event.eventStartDate).format(
+                                  'MMMM Do YYYY, h:mm:ss a'
+                                )}
+                              </div>
+                              <div className="item">
+                                End Date:
+                                {moment(data.event.eventEndDate).format(
+                                  'MMMM Do YYYY, h:mm:ss a'
+                                )}
+                              </div>
+                              <div className="item">
+                                Location: {data.event.location}
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              <div className="item">Not an event</div>
+                            </div>
+                          )}
+                          {data.task ? (
+                            <div>
+                              <div className="item">
+                                Deadline Date:
+                                {moment(data.task.deadlineDate).format(
+                                  'MMMM Do YYYY, h:mm:ss a'
+                                )}
+                              </div>
+                              <div className="item">
+                                Complete: {data.task.complete.toString()}
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              <div className="item">Not an task</div>
+                            </div>
+                          )}
+                          <div className="item">
+                            No. of Reminders {data.reminders.length}
+                          </div>
+                          {data.reminders.map(reminder => {
+                            return (
+                              <div key={reminder.id}>
+                                <div className="item">
+                                  Reminder Date:
+                                  {moment(reminder.reminderDate).format(
+                                    'MMMM Do YYYY, h:mm:ss a'
+                                  )};
+                                </div>
+                                <div className="item">
+                                  Reminder Note: {reminder.reminderNote}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
                   })
                 : userData.map(user => {
                     return <h1 key={user.id}>{user.name}</h1>
@@ -166,7 +342,8 @@ class UserHome extends Component {
  */
 const mapState = state => {
   return {
-    email: state.user.email
+    username: state.user.username,
+    user: state.user
   }
 }
 
@@ -176,5 +353,5 @@ export default connect(mapState)(UserHome)
  * PROP TYPES
  */
 UserHome.propTypes = {
-  email: PropTypes.string
+  username: PropTypes.string
 }

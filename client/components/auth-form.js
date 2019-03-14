@@ -24,7 +24,7 @@ const AuthForm = props => {
             <div className="field">
               <label>Username</label>
               <div className="ui left labeled icon input">
-                <input name="email" type="text" />
+                <input name="username" type="text" />
                 <i className="user icon" />
               </div>
             </div>
@@ -73,9 +73,9 @@ const mapDispatch = dispatch => {
     handleSubmit(evt) {
       evt.preventDefault()
       const formName = evt.target.name
-      const email = evt.target.email.value
+      const username = evt.target.username.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+      dispatch(auth(username, password, formName))
     }
   }
 }
