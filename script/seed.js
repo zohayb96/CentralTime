@@ -65,9 +65,9 @@ async function seed() {
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${entries.length} entries`)
-  console.log(`seeded ${events.length} entries`)
-  console.log(`seeded ${tasks.length} entries`)
-  console.log(`seeded ${reminders.length} entries`)
+  console.log(`seeded ${events.length} events`)
+  console.log(`seeded ${tasks.length} tasks`)
+  console.log(`seeded ${reminders.length} reminders`)
   console.log(`seeded successfully`)
 }
 
