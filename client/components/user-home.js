@@ -181,12 +181,13 @@ class UserHome extends Component {
             </div>
           </div>
         </div>
-        {this.state.viewState === 'calendar' ? (
+        {/* // TOGGLE CALENDAR VIEW HID LIST VIEW */}
+        {/* {this.state.viewState === 'calendar' ? (
           // *INSERT CALENDAR COMPONENT HERE*
           <h1>Calendar</h1>
         ) : (
           <h1 />
-        )}
+        )} */}
         {this.state.displayDataType === 'tasks'
           ? this.state.entries.map(data => {
               return (
@@ -369,6 +370,7 @@ class UserHome extends Component {
                                 </div>
                                 {data.event ? (
                                   <div>
+                                    <div className="ui button">Complete</div>
                                     <div className="content">
                                       Start Date:
                                       {moment(data.event.eventStartDate).format(
@@ -421,8 +423,7 @@ class UserHome extends Component {
                             ) : (
                               <div className="item">
                                 <div className="right floated content">
-                                  <div className="ui button">Add Reminder</div>
-                                  <div className="ui button">Complete</div>
+                                  <div className="ui button">Add Reminders</div>
                                   <div
                                     className="ui button"
                                     onClick={() =>
