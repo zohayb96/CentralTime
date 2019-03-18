@@ -42,7 +42,17 @@ router.get('/:id', async function(req, res, next) {
 // matches DELETE requests to /api/entries/:entryId
 router.delete('/:entryId', async function(req, res, next) {
   try {
-    const destroyed = await Entries.destroy({
+    const destroyedTask = await Task.destroy({
+      where: {
+        entryId: req.params.entryId
+      }
+    })
+    const destroyedEvents = await Events.destroy({
+      where: {
+        entryId: req.params.entryId
+      }
+    })
+    const destroyedEntry = await Entries.destroy({
       where: {
         id: req.params.entryId
       }
