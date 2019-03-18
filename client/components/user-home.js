@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import axios from 'axios'
 var moment = require('moment')
+import {Link} from 'react-router-dom'
 
 class UserHome extends Component {
   constructor(props) {
@@ -167,14 +168,10 @@ class UserHome extends Component {
                 type="button"
                 // onClick={() => viewLeaderBoard()}
               >
-                Add Task
+                <Link to="/addtask">Add Task</Link>
               </button>
-              <button
-                className="ui pink button"
-                type="button"
-                // onClick={() => viewLeaderBoard()}
-              >
-                Add Event
+              <button className="ui pink button" type="button">
+                <Link to="/addevent">Add Event</Link>
               </button>
             </div>
           </div>
@@ -191,7 +188,6 @@ class UserHome extends Component {
             ? this.state.entries.map(data => {
                 return (
                   <div className="item" key={data.id}>
-                    <div className="header">Entry Name: {data.entryName}</div>
                     {data.task ? (
                       <div>
                         <div className="ui celled list">
