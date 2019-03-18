@@ -14,9 +14,16 @@ router.get('/', async function(req, res, next) {
   }
 })
 // matches POST requests to /api/entries/
-router.post('/', function(req, res, next) {
-  /* etc */
+router.post('/', async function(req, res, next) {
+  try {
+    const entry = await Entries.create(req.body)
+    res.json(entry)
+  } catch (error) {
+    res.sendStatus(500)
+    next(error)
+  }
 })
+
 // matches PUT requests to /api/entries/:entryId
 router.get('/:id', async function(req, res, next) {
   const user = req.params.id
@@ -33,8 +40,17 @@ router.get('/:id', async function(req, res, next) {
   }
 })
 // matches DELETE requests to /api/entries/:entryId
-router.delete('/:entryId', function(req, res, next) {
-  /* etc */
+router.delete('/:entryId', async function(req, res, next) {
+  try {
+    const destroyed = await Entries.destroy({
+      where: {
+        id: req.params.entryId
+      }
+    })
+    res.sendStatus(204)
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router

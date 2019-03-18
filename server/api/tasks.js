@@ -13,9 +13,15 @@ router.get('/', async function(req, res, next) {
 })
 
 // matches POST requests to /api/tasks/
-router.post('/', function(req, res, next) {
-  /* etc */
+router.post('/', async function(req, res, next) {
+  try {
+    const CreatedEvent = await Task.create(req.body)
+    res.json(CreatedEvent)
+  } catch (error) {
+    next(error)
+  }
 })
+
 // matches PUT requests to /api/tasks/:taskId
 router.put('/:taskId', function(req, res, next) {
   /* etc */

@@ -8,7 +8,7 @@ const Task = db.define('task', {
   },
   complete: {
     type: Sequelize.BOOLEAN,
-    allowNull: false
+    defaultValue: false
   }
 })
 

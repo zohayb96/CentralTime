@@ -13,9 +13,15 @@ router.get('/', async function(req, res, next) {
 })
 
 // matches POST requests to /api/events/
-router.post('/', function(req, res, next) {
-  /* etc */
+router.post('/', async function(req, res, next) {
+  try {
+    const CreatedEvent = await Events.create(req.body)
+    res.json(CreatedEvent)
+  } catch (error) {
+    next(error)
+  }
 })
+
 // matches PUT requests to /api/events/:eventId
 router.put('/:eventId', function(req, res, next) {
   /* etc */

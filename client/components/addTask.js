@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import DateTimePicker from 'react-datetime-picker'
+import axios from 'axios'
+import {withRouter} from 'react-router-dom'
 
-export default class AddTask extends Component {
+class AddTask extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -22,7 +24,20 @@ export default class AddTask extends Component {
 
   async handleSubmit(submitEvent) {
     submitEvent.preventDefault()
-    console.log('hello')
+    try {
+      const createdEntry = await axios.post(`/api/entries/`, {
+        userId: this.props.user.id,
+        entryName: this.state.entryName,
+        entryDescription: this.state.entryDescription
+      })
+      const createdTask = await axios.post(`/api/tasks/`, {
+        entryId: createdEntry.data.id,
+        deadlineDate: this.state.deadlineDate
+      })
+      this.props.history.push('/home')
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   handleChangeDate(date) {
@@ -68,3 +83,12 @@ export default class AddTask extends Component {
     )
   }
 }
+
+const mapState = state => {
+  return {
+    username: state.user.username,
+    user: state.user
+  }
+}
+
+export default withRouter(connect(mapState)(AddTask))

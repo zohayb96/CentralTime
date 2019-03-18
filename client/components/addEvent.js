@@ -1,18 +1,25 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import DateTimePicker from 'react-datetime-picker'
+import axios from 'axios'
+import {withRouter} from 'react-router-dom'
 
-export default class AddEvent extends Component {
+class AddEvent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: '',
-      imageUrl: '',
-      address: '',
-      description: ''
+      entryName: '',
+      entryDescription: '',
+      location: '',
+      startDate: new Date(),
+      endDate: new Date()
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleChangeStartDate = this.handleChangeStartDate.bind(this)
+    this.handleChangeEndDate = this.handleChangeStartDate.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
+
   componentDidMount() {}
 
   handleChange(evt) {
@@ -20,59 +27,98 @@ export default class AddEvent extends Component {
   }
 
   async handleSubmit(submitEvent) {
+    console.log(this.state)
     submitEvent.preventDefault()
-    console.log('hello')
+    try {
+      const createdEntry = await axios.post(`/api/entries/`, {
+        userId: this.props.user.id,
+        entryName: this.state.entryName,
+        entryDescription: this.state.entryDescription
+      })
+      const createdEvent = await axios.post(`/api/events/`, {
+        entryId: createdEntry.data.id,
+        location: this.state.location,
+        eventStartDate: this.state.startDate,
+        eventEndDate: this.state.endDate
+      })
+      this.props.history.push('/home')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  handleChangeStartDate(date) {
+    this.setState({
+      startDate: date
+    })
+  }
+
+  handleChangeEndDate(date) {
+    this.setState({
+      endDate: date
+    })
+    console.log(this.state)
   }
 
   render() {
+    const {username} = this.props
     return (
-      <div className="addCampusForm">
+      <div>
         <form onSubmit={this.handleSubmit}>
-          <label name="name">Campus Name</label>
+          <label name="name">Entry Name</label>
           <input
             type="text"
-            id="name"
-            name="name"
-            placeholder="Enter a univeristy name..."
-            value={this.state.name}
+            id="entryName"
+            name="entryName"
+            placeholder="Enter Entry Name"
+            value={this.state.entryName}
             onChange={this.handleChange}
             required
           />
-          <label name="imageUrl">Campus Image</label>
+          <label name="address">Entry Description</label>
           <input
             type="text"
-            id="imageUrl"
-            name="imageUrl"
-            placeholder="Add a photo of the univerity"
+            id="entryDescription"
+            name="entryDescription"
+            placeholder="Add entry Desctription"
             onChange={this.handleChange}
-            value={this.state.imageUrl}
+            value={this.state.entryDescription}
             required
           />
-          <label name="address">Campus Address</label>
+          <label name="address">Location</label>
           <input
             type="text"
-            id="address"
-            name="address"
-            placeholder="Add the university address"
+            id="location"
+            name="location"
+            placeholder="Add location of event"
             onChange={this.handleChange}
-            value={this.state.address}
+            value={this.state.location}
             required
           />
-          <label name="description">Campus Description</label>
-          <input
-            type="text"
-            id="description"
-            name="description"
-            placeholder="Add the university description"
-            onChange={this.handleChange}
-            value={this.state.description}
-            required
+          <label>Event Start Date</label>
+          <DateTimePicker
+            onChange={this.handleChangeStartDate}
+            value={this.state.startDate}
+          />
+          <label>Event End Date</label>
+          <DateTimePicker
+            onChange={this.handleChangeEndDate}
+            value={this.state.endDate}
           />
           <button type="submit" className="submit">
-            Add Campus
+            Add Event
           </button>
         </form>
       </div>
     )
   }
 }
+
+const mapState = state => {
+  return {
+    username: state.user.username,
+    user: state.user
+  }
+}
+
+export default withRouter(connect(mapState)(AddEvent))
