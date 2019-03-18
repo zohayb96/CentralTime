@@ -135,7 +135,7 @@ class UserHome extends Component {
                 Events
               </button>
               <button
-                className="ui red button"
+                className="ui blue button"
                 type="button"
                 onClick={() => showTasks()}
               >
@@ -149,35 +149,47 @@ class UserHome extends Component {
                 Events + Tasks
               </button>
               <button
-                className="ui blue button"
+                className="ui white button"
                 type="button"
                 onClick={() => toggleCalendar()}
               >
                 Calendar View
               </button>
               <button
-                className="ui blue button"
+                className="ui white button"
                 type="button"
                 onClick={() => toggleList()}
               >
                 List View
               </button>
               <button
-                className="ui blue button"
+                className="ui white button"
                 type="button"
                 onClick={() => showReminders()}
               >
                 Toggle Reminders
               </button>
               <button
-                className="ui orange button"
+                className="ui white button"
                 type="button"
                 onClick={() => viewLeaderBoard()}
               >
                 View LeaderBoard
               </button>
-              <Link to="/addtask">Add Task</Link>
-              <Link to="/addevent">Add Event</Link>
+              <button
+                className="ui white button"
+                type="button"
+                onClick={() => viewLeaderBoard()}
+              >
+                <Link to="/addtask">Add Task</Link>
+              </button>
+              <button
+                className="ui white button"
+                type="button"
+                onClick={() => viewLeaderBoard()}
+              >
+                <Link to="/addevent">Add Event</Link>
+              </button>
             </div>
           </div>
         </div>
@@ -199,6 +211,7 @@ class UserHome extends Component {
                           <div className="right floated content">
                             <div className="ui button">Add Reminder</div>
                             <div className="ui button">Complete</div>
+                            {/* ADD COMPLETING A TASK method */}
                             <div
                               className="ui button"
                               onClick={() =>
@@ -213,7 +226,7 @@ class UserHome extends Component {
                             {data.entryDescription},
                           </div>
                           <div className="content">
-                            Deadline Date:
+                            Deadline Date:{' '}
                             {moment(data.task.deadlineDate).format(
                               'MMMM Do YYYY, h:mm:ss a'
                             )}
@@ -230,7 +243,7 @@ class UserHome extends Component {
                                 return (
                                   <div key={reminder.id}>
                                     <div className="content">
-                                      Reminder Date:
+                                      Reminder Date:{' '}
                                       {moment(reminder.reminderDate).format(
                                         'MMMM Do YYYY, h:mm:ss a'
                                       )};
@@ -289,13 +302,14 @@ class UserHome extends Component {
                               {data.entryDescription}
                             </div>
                             <div className="content">
-                              Start Date:
+                              Start Date:{' '}
                               {moment(data.event.eventStartDate).format(
                                 'MMMM Do YYYY, h:mm:ss a'
                               )}
                             </div>
                             <div className="content">
-                              End Date:{moment(data.event.eventEndDate).format(
+                              End{' '}
+                              {moment(data.event.eventEndDate).format(
                                 'MMMM Do YYYY, h:mm:ss a'
                               )}
                             </div>
@@ -310,7 +324,7 @@ class UserHome extends Component {
                                 return (
                                   <div key={reminder.id}>
                                     <div className="content">
-                                      Reminder Date:
+                                      Reminder Date:{' '}
                                       {moment(reminder.reminderDate).format(
                                         'MMMM Do YYYY, h:mm:ss a'
                                       )};
@@ -370,17 +384,17 @@ class UserHome extends Component {
                                 </div>
                                 {data.event ? (
                                   <div>
-                                    <div className="ui button">Complete</div>
                                     <div className="content">
-                                      Start Date:
+                                      Start Date:{' '}
                                       {moment(data.event.eventStartDate).format(
                                         'MMMM Do YYYY, h:mm:ss a'
                                       )}
                                     </div>
                                     <div className="content">
-                                      End Date:{moment(
-                                        data.event.eventEndDate
-                                      ).format('MMMM Do YYYY, h:mm:ss a')}
+                                      End{' '}
+                                      {moment(data.event.eventEndDate).format(
+                                        'MMMM Do YYYY, h:mm:ss a'
+                                      )}
                                     </div>
                                     <div className="content">
                                       Location: {data.event.location}
@@ -397,7 +411,7 @@ class UserHome extends Component {
                                     return (
                                       <div key={reminder.id}>
                                         <div className="content">
-                                          Reminder Date:
+                                          Reminder Date:{' '}
                                           {moment(reminder.reminderDate).format(
                                             'MMMM Do YYYY, h:mm:ss a'
                                           )};
@@ -424,6 +438,7 @@ class UserHome extends Component {
                               <div className="item">
                                 <div className="right floated content">
                                   <div className="ui button">Add Reminders</div>
+                                  <div className="ui button">Complete</div>
                                   <div
                                     className="ui button"
                                     onClick={() =>
@@ -441,7 +456,7 @@ class UserHome extends Component {
                                   {data.entryDescription}
                                 </div>
                                 <div className="content">
-                                  Deadline Date:
+                                  Deadline Date:{' '}
                                   {moment(data.task.deadlineDate).format(
                                     'MMMM Do YYYY, h:mm:ss a'
                                   )}
@@ -458,7 +473,7 @@ class UserHome extends Component {
                                       return (
                                         <div key={reminder.id}>
                                           <div className="content">
-                                            Reminder Date:
+                                            Reminder Date:{' '}
                                             {moment(
                                               reminder.reminderDate
                                             ).format(
