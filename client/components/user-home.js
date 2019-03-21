@@ -16,7 +16,8 @@ class UserHome extends Component {
       events: [],
       entries: [],
       leaderboard: [],
-      viewReminders: false
+      viewReminders: false,
+      reminders: []
     }
     this.deleteSelected = this.deleteSelected.bind(this)
   }
@@ -44,6 +45,27 @@ class UserHome extends Component {
     this.setState({
       entries: remainingEntries
     })
+  }
+
+  async deleteReminder(reminderId, entries) {
+    await axios.delete(`/api/reminders/${reminderId}`)
+    const remainingReminders = entries.filter(entry =>
+      entry.reminders.filter(reminder => reminder.id !== reminderId)
+    )
+    this.setState({
+      reminders: remainingReminders
+    })
+  }
+
+  async completeTask(taskId) {
+    // await axios.put(`/api/tasks/${reminderId}`)
+    // await axios.put(`/api/user/${userId}`)
+    // const remainingReminders = entries.filter(entry =>
+    //   entry.reminders.filter(reminder => reminder.id !== reminderId)
+    // )
+    // this.setState({
+    //   reminders: remainingReminders
+    // })
   }
 
   render() {
@@ -190,6 +212,13 @@ class UserHome extends Component {
               >
                 <Link to="/addevent">Add Event</Link>
               </button>
+              <button
+                className="ui white button"
+                type="button"
+                onClick={() => viewLeaderBoard()}
+              >
+                <Link to="/addreminder">Add Reminder</Link>
+              </button>
             </div>
           </div>
         </div>
@@ -205,67 +234,72 @@ class UserHome extends Component {
               return (
                 <div className="item" key={data.id}>
                   {data.task ? (
-                    <div>
-                      <div className="ui celled list">
-                        <div className="item">
-                          <div className="right floated content">
-                            <div className="ui button">Add Reminder</div>
-                            <div className="ui button">Complete</div>
-                            {/* ADD COMPLETING A TASK method */}
-                            <div
-                              className="ui button"
-                              onClick={() =>
-                                this.deleteSelected(data.id, this.state.entries)
-                              }
-                            >
-                              Remove
-                            </div>
+                    <div className="ui celled list">
+                      <div className="item">
+                        <div className="right floated content">
+                          <div
+                            className="ui button"
+                            onClick={() =>
+                              this.completeTask(data.id, this.state.entries)
+                            }
+                          >
+                            Complete
                           </div>
-                          <div className="header">{data.entryName}</div>
-                          <div className="content">
-                            {data.entryDescription},
+                          {/* ADD COMPLETING A TASK method */}
+                          <div
+                            className="ui button"
+                            onClick={() =>
+                              this.deleteSelected(data.id, this.state.entries)
+                            }
+                          >
+                            Remove
                           </div>
-                          <div className="content">
-                            Deadline Date:{' '}
-                            {moment(data.task.deadlineDate).format(
-                              'MMMM Do YYYY, h:mm:ss a'
-                            )}
+                        </div>
+                        <div className="header">{data.entryName}</div>
+                        <div className="content">{data.entryDescription},</div>
+                        <div className="content">
+                          Deadline Date:{' '}
+                          {moment(data.task.deadlineDate).format(
+                            'MMMM Do YYYY, h:mm:ss a'
+                          )}
+                        </div>
+                        <div className="content">
+                          Complete: {data.task.complete.toString()}
+                        </div>
+                        <div>
+                          <div className="header">
+                            No. of Reminders {data.reminders.length}
                           </div>
-                          <div className="content">
-                            Complete: {data.task.complete.toString()}
-                          </div>
-                          <div>
-                            <div className="header">
-                              No. of Reminders {data.reminders.length}
-                            </div>
-                            {this.state.viewReminders === false ? (
-                              data.reminders.map(reminder => {
-                                return (
-                                  <div key={reminder.id}>
-                                    <div className="content">
-                                      Reminder Date:{' '}
-                                      {moment(reminder.reminderDate).format(
-                                        'MMMM Do YYYY, h:mm:ss a'
-                                      )};
-                                    </div>
-                                    <div className="content">
-                                      Reminder Note: {reminder.reminderNote}
-                                    </div>
-                                    <div
-                                      className="ui button"
-                                      // onClick={() =>
-                                      //   this.deleteSelected(data.id, this.state.entries)
-                                      // }
-                                    >
-                                      Remove Reminder
-                                    </div>
+                          {this.state.viewReminders === false ? (
+                            data.reminders.map(reminder => {
+                              return (
+                                <div key={reminder.id}>
+                                  <div className="content">
+                                    Reminder Date:{' '}
+                                    {moment(reminder.reminderDate).format(
+                                      'MMMM Do YYYY, h:mm:ss a'
+                                    )};
                                   </div>
-                                )
-                              })
-                            ) : (
-                              <div />
-                            )}
-                          </div>
+                                  <div className="content">
+                                    Reminder Note: {reminder.reminderNote}
+                                  </div>
+                                  <div
+                                    className="ui button"
+                                    onClick={() =>
+                                      this.deleteReminder(
+                                        reminder.id,
+                                        this.state.entries
+                                      )
+                                    }
+                                  >
+                                    Remove Reminder
+                                  </div>
+                                </div>
+                              )
+                            })
+                          ) : (
+                            <div />
+                          )}
                         </div>
                       </div>
                     </div>
@@ -280,77 +314,72 @@ class UserHome extends Component {
                 return (
                   <div className="item" key={data.id}>
                     {data.event ? (
-                      <div>
-                        <div className="ui celled list">
-                          <div className="item">
-                            <div className="right floated content">
-                              <div className="ui button">Add Reminder</div>
-                              <div
-                                className="ui button"
-                                onClick={() =>
-                                  this.deleteSelected(
-                                    data.id,
-                                    this.state.entries
-                                  )
-                                }
-                              >
-                                Remove
-                              </div>
+                      <div className="ui celled list">
+                        <div className="item">
+                          <div className="right floated content">
+                            <div
+                              className="ui button"
+                              onClick={() =>
+                                this.deleteSelected(data.id, this.state.entries)
+                              }
+                            >
+                              Remove
                             </div>
-                            <div className="header">{data.entryName}</div>
-                            <div className="content">
-                              {data.entryDescription}
-                            </div>
-                            <div className="content">
-                              Start Date:{' '}
-                              {moment(data.event.eventStartDate).format(
-                                'MMMM Do YYYY, h:mm:ss a'
-                              )}
-                            </div>
-                            <div className="content">
-                              End{' '}
-                              {moment(data.event.eventEndDate).format(
-                                'MMMM Do YYYY, h:mm:ss a'
-                              )}
-                            </div>
-                            <div className="content">
-                              Location: {data.event.location}
-                            </div>
-                            <div className="header">
-                              No. of Reminders {data.reminders.length}
-                            </div>
-                            {this.state.viewReminders === false ? (
-                              data.reminders.map(reminder => {
-                                return (
-                                  <div key={reminder.id}>
-                                    <div className="content">
-                                      Reminder Date:{' '}
-                                      {moment(reminder.reminderDate).format(
-                                        'MMMM Do YYYY, h:mm:ss a'
-                                      )};
-                                    </div>
-                                    <div className="content">
-                                      Reminder Note: {reminder.reminderNote}
-                                    </div>
-                                    <div
-                                      className="ui button"
-                                      // onClick={() =>
-                                      //   this.deleteSelected(data.id, this.state.entries)
-                                      // }
-                                    >
-                                      Remove Reminder
-                                    </div>
-                                  </div>
-                                )
-                              })
-                            ) : (
-                              <div />
+                          </div>
+                          <div className="header">{data.entryName}</div>
+                          <div className="content">{data.entryDescription}</div>
+                          <div className="content">
+                            Start Date:{' '}
+                            {moment(data.event.eventStartDate).format(
+                              'MMMM Do YYYY, h:mm:ss a'
                             )}
                           </div>
+                          <div className="content">
+                            End{' '}
+                            {moment(data.event.eventEndDate).format(
+                              'MMMM Do YYYY, h:mm:ss a'
+                            )}
+                          </div>
+                          <div className="content">
+                            Location: {data.event.location}
+                          </div>
+                          <div className="header">
+                            No. of Reminders {data.reminders.length}
+                          </div>
+                          {this.state.viewReminders === false ? (
+                            data.reminders.map(reminder => {
+                              return (
+                                <div key={reminder.id}>
+                                  <div className="content">
+                                    Reminder Date:{' '}
+                                    {moment(reminder.reminderDate).format(
+                                      'MMMM Do YYYY, h:mm:ss a'
+                                    )};
+                                  </div>
+                                  <div className="content">
+                                    Reminder Note: {reminder.reminderNote}
+                                  </div>
+                                  <div
+                                    className="ui button"
+                                    onClick={() =>
+                                      this.deleteReminder(
+                                        reminder.id,
+                                        data.reminders
+                                      )
+                                    }
+                                  >
+                                    Remove Reminder
+                                  </div>
+                                </div>
+                              )
+                            })
+                          ) : (
+                            <div />
+                          )}
                         </div>
                       </div>
                     ) : (
-                      <div />
+                      <div>No Events</div>
                     )}
                   </div>
                 )
@@ -365,7 +394,6 @@ class UserHome extends Component {
                             {data.event ? (
                               <div className="item">
                                 <div className="right floated content">
-                                  <div className="ui button">Add Reminder</div>
                                   <div
                                     className="ui button"
                                     onClick={() =>
@@ -421,9 +449,12 @@ class UserHome extends Component {
                                         </div>
                                         <div
                                           className="ui button"
-                                          // onClick={() =>
-                                          //   this.deleteSelected(data.id, this.state.entries)
-                                          // }
+                                          onClick={() =>
+                                            this.deleteReminder(
+                                              reminder.id,
+                                              this.state.entries
+                                            )
+                                          }
                                         >
                                           Remove Reminder
                                         </div>
@@ -437,7 +468,6 @@ class UserHome extends Component {
                             ) : (
                               <div className="item">
                                 <div className="right floated content">
-                                  <div className="ui button">Add Reminders</div>
                                   <div className="ui button">Complete</div>
                                   <div
                                     className="ui button"
@@ -486,9 +516,12 @@ class UserHome extends Component {
                                           </div>
                                           <div
                                             className="ui button"
-                                            // onClick={() =>
-                                            //   this.deleteSelected(data.id, this.state.entries)
-                                            // }
+                                            onClick={() =>
+                                              this.deleteReminder(
+                                                reminder.id,
+                                                this.state.entries
+                                              )
+                                            }
                                           >
                                             Remove Reminder
                                           </div>
@@ -529,9 +562,6 @@ const mapState = state => {
 
 export default connect(mapState)(UserHome)
 
-/**
- * PROP TYPES
- */
 UserHome.propTypes = {
   username: PropTypes.string
 }

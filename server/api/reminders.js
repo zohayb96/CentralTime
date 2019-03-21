@@ -12,16 +12,30 @@ router.get('/', async function(req, res, next) {
   }
 })
 // matches POST requests to /api/reminders/
-router.post('/', function(req, res, next) {
-  /* etc */
+router.post('/', async function(req, res, next) {
+  try {
+    const createdReminder = await Reminder.create(req.body)
+    res.json(createdReminder)
+  } catch (error) {
+    next(error)
+  }
 })
 // matches PUT requests to /api/reminders/:reminderId
 router.put('/:reminderId', function(req, res, next) {
   /* etc */
 })
 // matches DELETE requests to /api/reminders/:reminderId
-router.delete('/:reminderId', function(req, res, next) {
-  /* etc */
+router.delete('/:reminderId', async function(req, res, next) {
+  try {
+    const destroyedReminder = await Reminder.destroy({
+      where: {
+        id: req.params.reminderId
+      }
+    })
+    res.sendStatus(200)
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router
