@@ -19,6 +19,7 @@ class UserHome extends Component {
       reminders: []
     }
     this.deleteSelected = this.deleteSelected.bind(this)
+    this.viewLeaderBoard = this.viewLeaderBoard.bind(this)
   }
 
   async componentDidMount() {
@@ -54,6 +55,16 @@ class UserHome extends Component {
     this.setState({
       reminders: remainingReminders
     })
+  }
+
+  async viewLeaderBoard() {
+    // const topUsers = await axios.get(`http://localhost:8080/api/users`)
+    this.setState({
+      // viewState: 'leaderboard',
+      displayDataType: 'leaderboard'
+      // leaderboard: topUsers
+    })
+    console.log(this.state)
   }
 
   async completeTask(taskId, task) {
@@ -118,15 +129,6 @@ class UserHome extends Component {
     const showBoth = () => {
       this.setState({
         displayDataType: 'both'
-      })
-      console.log(this.state)
-    }
-
-    const viewLeaderBoard = () => {
-      // const topUsers = await axios.get(`http://localhost:8080/api/users`)
-      this.setState({
-        viewState: 'leaderboard',
-        displayDataType: 'leaderboard'
       })
       console.log(this.state)
     }
@@ -207,28 +209,28 @@ class UserHome extends Component {
               <button
                 className="ui white button"
                 type="button"
-                onClick={() => viewLeaderBoard()}
+                onClick={() => this.viewLeaderBoard()}
               >
                 View LeaderBoard
               </button>
               <button
                 className="ui white button"
                 type="button"
-                onClick={() => viewLeaderBoard()}
+                onClick={() => this.viewLeaderBoard()}
               >
                 <Link to="/addtask">Add Task</Link>
               </button>
               <button
                 className="ui white button"
                 type="button"
-                onClick={() => viewLeaderBoard()}
+                onClick={() => this.viewLeaderBoard()}
               >
                 <Link to="/addevent">Add Event</Link>
               </button>
               <button
                 className="ui white button"
                 type="button"
-                onClick={() => viewLeaderBoard()}
+                onClick={() => this.viewLeaderBoard()}
               >
                 <Link to="/addreminder">Add Reminder</Link>
               </button>
@@ -660,10 +662,12 @@ class UserHome extends Component {
                 })
               : this.state.leaderboard.map((user, index) => {
                   return (
-                    <h1 key={user.id}>
-                      #{index + 1} Username: {user.username} - Points:
-                      {user.points}
-                    </h1>
+                    <center key={user.id}>
+                      <h1>
+                        #{index + 1} Username: {user.username} - Points:
+                        {user.points}
+                      </h1>
+                    </center>
                   )
                 })}
       </div>

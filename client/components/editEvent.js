@@ -20,7 +20,12 @@ class EditEvent extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidMount() {}
+  // componentDidMount() {
+  //   this.setState({
+  //     startDate: this.props.location.state.data.event.eventStartDate,
+  //     endDate: this.props.location.state.data.event.eventEndDate
+  //   })
+  // }
 
   handleChange(evt) {
     this.setState({[evt.target.name]: evt.target.value})
@@ -63,6 +68,8 @@ class EditEvent extends Component {
 
   render() {
     const {username} = this.props
+    const entryData = this.props.location.state.data
+    const eventData = this.props.location.state.data.event
     console.log(this.props)
     return (
       <div>
@@ -72,7 +79,7 @@ class EditEvent extends Component {
             type="text"
             id="entryName"
             name="entryName"
-            placeholder="Enter Entry Name"
+            placeholder={entryData.entryName}
             value={this.state.entryName}
             onChange={this.handleChange}
             required
@@ -82,7 +89,7 @@ class EditEvent extends Component {
             type="text"
             id="entryDescription"
             name="entryDescription"
-            placeholder="Add entry Desctription"
+            placeholder={entryData.entryDescription}
             onChange={this.handleChange}
             value={this.state.entryDescription}
             required
@@ -92,7 +99,7 @@ class EditEvent extends Component {
             type="text"
             id="location"
             name="location"
-            placeholder="Add location of event"
+            placeholder={eventData.location}
             onChange={this.handleChange}
             value={this.state.location}
             required

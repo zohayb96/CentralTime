@@ -16,7 +16,12 @@ class EditTask extends Component {
     this.handleChangeDate = this.handleChangeDate.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
-  componentDidMount() {}
+
+  // componentDidMount() {
+  //   this.setState({
+  //     deadlineDate: this.props.location.state.data.task.deadlineDate
+  //   })
+  // }
 
   handleChange(evt) {
     this.setState({[evt.target.name]: evt.target.value})
@@ -51,6 +56,8 @@ class EditTask extends Component {
   }
 
   render() {
+    const entryData = this.props.location.state.data
+    const taskData = this.props.location.state.data.task
     console.log(this.props)
     return (
       <div>
@@ -60,7 +67,7 @@ class EditTask extends Component {
             type="text"
             id="entryName"
             name="entryName"
-            placeholder="Enter Entry Name"
+            placeholder={entryData.entryName}
             value={this.state.entryName}
             onChange={this.handleChange}
             required
@@ -70,7 +77,7 @@ class EditTask extends Component {
             type="text"
             id="entryDescription"
             name="entryDescription"
-            placeholder="Add entry Desctription"
+            placeholder={entryData.entryDescription}
             onChange={this.handleChange}
             value={this.state.entryDescription}
             required
