@@ -17,6 +17,8 @@ class AddReminder extends Component {
     this.handleChangeDate = this.handleChangeDate.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
+
+  // Get Entries()
   async componentDidMount() {
     const allEntries = await axios.get(
       `http://localhost:8080/api/entries/${this.props.user.id}`

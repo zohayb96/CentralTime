@@ -14,6 +14,19 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/leaderboard', async (req, res, next) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'username', 'points'],
+      order: [['points', 'DESC']],
+      limit: 10
+    })
+    res.json(users)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.put('/:userId', async function(req, res, next) {
   try {
     const editUser = await User.findOne({

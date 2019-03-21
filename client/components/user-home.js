@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 var moment = require('moment')
 import {Link} from 'react-router-dom'
+import {DayPilot, DayPilotMonth, DayPilotNavigator} from 'daypilot-pro-react'
 
 class UserHome extends Component {
   constructor(props) {
@@ -16,7 +17,9 @@ class UserHome extends Component {
       entries: [],
       leaderboard: [],
       viewReminders: false,
-      reminders: []
+      reminders: [],
+      startDate: DayPilot.Date.today(),
+      eventEndSpec: 'Date'
     }
     this.deleteSelected = this.deleteSelected.bind(this)
     this.viewLeaderBoard = this.viewLeaderBoard.bind(this)
@@ -32,10 +35,27 @@ class UserHome extends Component {
     // const allEvents = await axios.get(
     //   `http://localhost:8080/api/entries/${this.props.user.id}`
     // )
-    const topUsers = await axios.get(`http://localhost:8080/api/users`)
+    const topUsers = await axios.get(
+      `http://localhost:8080/api/users/leaderboard`
+    )
+
     this.setState({
       entries: allEntries.data,
-      leaderboard: topUsers.data
+      leaderboard: topUsers.data,
+      events: [
+        {
+          id: 1,
+          text: 'Event 1',
+          start: '2019-03-18',
+          end: '2019-03-20'
+        },
+        {
+          id: 2,
+          text: 'Event 2',
+          start: '2019-03-04',
+          end: '2019-03-06'
+        }
+      ]
     })
   }
 
@@ -56,6 +76,8 @@ class UserHome extends Component {
       reminders: remainingReminders
     })
   }
+
+  // VIEW users function in class diagram - changed to help code readability.
 
   async viewLeaderBoard() {
     // const topUsers = await axios.get(`http://localhost:8080/api/users`)
@@ -92,6 +114,7 @@ class UserHome extends Component {
   }
 
   render() {
+    var {...config} = this.state
     const toggleList = () => {
       this.setState({
         viewState: 'list'
@@ -104,7 +127,8 @@ class UserHome extends Component {
       })
     }
 
-    const showReminders = () => {
+    // getReminders
+    const getReminders = () => {
       console.log('showReminder pressed ')
       this.setState(prevState => ({
         viewReminders: !prevState.viewReminders
@@ -202,7 +226,7 @@ class UserHome extends Component {
               <button
                 className="ui white button"
                 type="button"
-                onClick={() => showReminders()}
+                onClick={() => getReminders()}
               >
                 Toggle Reminders
               </button>
@@ -237,13 +261,40 @@ class UserHome extends Component {
             </div>
           </div>
         </div>
-        {/* // TOGGLE CALENDAR VIEW HID LIST VIEW */}
-        {/* {this.state.viewState === 'calendar' ? (
-          // *INSERT CALENDAR COMPONENT HERE*
-          <h1>Calendar</h1>
+        {this.state.viewState === 'calendar' ? (
+          <div>
+            <button
+              className="ui white button"
+              type="button"
+              onClick={() => console.log(this.state)}
+            >
+              View state
+            </button>
+            <DayPilotNavigator
+              selectMode="month"
+              cellWidth={30}
+              cellHeight={30}
+              dayHeaderHeight={30}
+              titleHeight={30}
+              showMonths={1}
+              skipMonths={1}
+              onTimeRangeSelected={args => {
+                this.setState({
+                  startDate: args.day
+                })
+                console.log('PRESSED', this.state.startDate)
+              }}
+            />
+            <DayPilotMonth
+              {...config}
+              ref={component => {
+                this.calendar = component && component.control
+              }}
+            />
+          </div>
         ) : (
-          <h1 />
-        )} */}
+          <div />
+        )}
         {this.state.displayDataType === 'tasks'
           ? this.state.entries.map(data => {
               return (
@@ -663,8 +714,9 @@ class UserHome extends Component {
               : this.state.leaderboard.map((user, index) => {
                   return (
                     <center key={user.id}>
+                      <div />
                       <h1>
-                        #{index + 1} Username: {user.username} - Points:
+                        #{index + 1} {user.username} - Points:
                         {user.points}
                       </h1>
                     </center>
