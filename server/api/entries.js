@@ -24,7 +24,6 @@ router.post('/', async function(req, res, next) {
   }
 })
 
-// matches PUT requests to /api/entries/:entryId
 router.get('/:id', async function(req, res, next) {
   const user = req.params.id
   try {
@@ -58,6 +57,21 @@ router.delete('/:entryId', async function(req, res, next) {
       }
     })
     res.sendStatus(204)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.put('/:entryId', async function(req, res, next) {
+  /* etc */
+  try {
+    const entry = await Entries.findOne({
+      where: {
+        id: req.params.entryId
+      }
+    })
+    entry.update(req.body)
+    res.json(entry)
   } catch (error) {
     next(error)
   }

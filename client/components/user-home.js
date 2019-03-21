@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 var moment = require('moment')
 import {Link} from 'react-router-dom'
-import addevent from './addEvent'
 
 class UserHome extends Component {
   constructor(props) {
@@ -271,6 +270,16 @@ class UserHome extends Component {
                           >
                             Remove
                           </div>
+                          <Link
+                            to={{
+                              pathname: '/edittask',
+                              state: {
+                                data: data
+                              }
+                            }}
+                          >
+                            Edit
+                          </Link>
                         </div>
                         <div className="header">{data.entryName}</div>
                         <div className="content">{data.entryDescription},</div>
@@ -358,6 +367,16 @@ class UserHome extends Component {
                             >
                               Remove
                             </div>
+                            <Link
+                              to={{
+                                pathname: '/editevent',
+                                state: {
+                                  data: data
+                                }
+                              }}
+                            >
+                              Edit
+                            </Link>
                           </div>
                           <div className="header">{data.entryName}</div>
                           <div className="content">{data.entryDescription}</div>
@@ -454,6 +473,16 @@ class UserHome extends Component {
                                   >
                                     Remove
                                   </div>
+                                  <Link
+                                    to={{
+                                      pathname: '/editevent',
+                                      state: {
+                                        data
+                                      }
+                                    }}
+                                  >
+                                    Edit
+                                  </Link>
                                 </div>
                                 <div className="header">{data.entryName}</div>
                                 <div className="content">
@@ -559,6 +588,16 @@ class UserHome extends Component {
                                   >
                                     Remove
                                   </div>
+                                  <Link
+                                    to={{
+                                      pathname: '/edittask',
+                                      state: {
+                                        data
+                                      }
+                                    }}
+                                  >
+                                    Edit
+                                  </Link>
                                 </div>
                                 <div className="header">{data.entryName}</div>
                                 <div className="content">

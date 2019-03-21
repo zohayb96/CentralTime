@@ -24,7 +24,6 @@ router.post('/', async function(req, res, next) {
 
 // matches PUT requests to /api/tasks/:taskId
 router.put('/:taskId', async function(req, res, next) {
-  /* etc */
   try {
     const task = await Task.findOne({
       where: {

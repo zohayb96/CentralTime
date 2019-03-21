@@ -23,9 +23,21 @@ router.post('/', async function(req, res, next) {
 })
 
 // matches PUT requests to /api/events/:eventId
-router.put('/:eventId', function(req, res, next) {
+router.put('/:eventId', async function(req, res, next) {
   /* etc */
+  try {
+    const event = await Events.findOne({
+      where: {
+        id: req.params.eventId
+      }
+    })
+    event.update(req.body)
+    res.json(event)
+  } catch (error) {
+    next(error)
+  }
 })
+
 // matches DELETE requests to /api/events/:eventId
 router.delete('/:eventId', function(req, res, next) {
   /* etc */

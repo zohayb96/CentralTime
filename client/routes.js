@@ -9,7 +9,9 @@ import {
   AddEvent,
   AddTask,
   AddReminder,
-  EditReminder
+  EditReminder,
+  EditEvent,
+  EditTask
 } from './components'
 import {me} from './store'
 
@@ -36,6 +38,8 @@ class Routes extends Component {
             <Route path="/home" component={UserHome} />
             <Route path="/addtask" component={AddTask} />
             <Route path="/addevent" component={AddEvent} />
+            <Route path="/edittask" component={EditTask} />
+            <Route path="/editevent" component={EditEvent} />
             <Route path="/addreminder" component={AddReminder} />
             <Route path="/editreminder" component={EditReminder} />
           </Switch>
