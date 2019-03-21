@@ -21,8 +21,19 @@ router.post('/', async function(req, res, next) {
   }
 })
 // matches PUT requests to /api/reminders/:reminderId
-router.put('/:reminderId', function(req, res, next) {
+router.put('/:reminderId', async function(req, res, next) {
   /* etc */
+  try {
+    const reminder = await Reminder.findOne({
+      where: {
+        id: req.params.reminderId
+      }
+    })
+    reminder.update(req.body)
+    res.json(reminder)
+  } catch (error) {
+    next(error)
+  }
 })
 // matches DELETE requests to /api/reminders/:reminderId
 router.delete('/:reminderId', async function(req, res, next) {

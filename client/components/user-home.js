@@ -57,15 +57,28 @@ class UserHome extends Component {
     })
   }
 
-  async completeTask(taskId) {
-    // await axios.put(`/api/tasks/${reminderId}`)
-    // await axios.put(`/api/user/${userId}`)
-    // const remainingReminders = entries.filter(entry =>
-    //   entry.reminders.filter(reminder => reminder.id !== reminderId)
-    // )
-    // this.setState({
-    //   reminders: remainingReminders
-    // })
+  async completeTask(taskId, task) {
+    console.log(taskId, task.complete, this.props.user.id)
+    try {
+      const res = await axios.put(`/api/tasks/${taskId}`, {
+        complete: !task.complete
+      })
+      this.props.user.points = this.props.user.points + 10
+      const allEntries = await axios.get(
+        `http://localhost:8080/api/entries/${this.props.user.id}`
+      )
+      const topUsers = await axios.get(`http://localhost:8080/api/users`)
+      const editedUser = await axios.put(`/api/users/${this.props.user.id}`, {
+        points: this.props.user.points
+      })
+      this.setState({
+        entries: allEntries.data,
+        leaderboard: topUsers.data
+      })
+      console.log('STATE: ', this.state.leaderboard)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   render() {
@@ -111,6 +124,7 @@ class UserHome extends Component {
     }
 
     const viewLeaderBoard = () => {
+      // const topUsers = await axios.get(`http://localhost:8080/api/users`)
       this.setState({
         viewState: 'leaderboard',
         displayDataType: 'leaderboard'
@@ -237,15 +251,18 @@ class UserHome extends Component {
                     <div className="ui celled list">
                       <div className="item">
                         <div className="right floated content">
-                          <div
-                            className="ui button"
-                            onClick={() =>
-                              this.completeTask(data.id, this.state.entries)
-                            }
-                          >
-                            Complete
-                          </div>
-                          {/* ADD COMPLETING A TASK method */}
+                          {data.task.complete === true ? (
+                            <div />
+                          ) : (
+                            <div
+                              className="ui button"
+                              onClick={() =>
+                                this.completeTask(data.task.id, data.task)
+                              }
+                            >
+                              Complete
+                            </div>
+                          )}
                           <div
                             className="ui button"
                             onClick={() =>
@@ -294,6 +311,22 @@ class UserHome extends Component {
                                   >
                                     Remove Reminder
                                   </div>
+                                  <button
+                                    className="ui white button"
+                                    type="button"
+                                    // onClick={() => viewLeaderBoard()}
+                                  >
+                                    <Link
+                                      to={{
+                                        pathname: '/editreminder',
+                                        state: {
+                                          remId: reminder.id
+                                        }
+                                      }}
+                                    >
+                                      Edit Reminder
+                                    </Link>
+                                  </button>
                                 </div>
                               )
                             })
@@ -370,6 +403,22 @@ class UserHome extends Component {
                                   >
                                     Remove Reminder
                                   </div>
+                                  <button
+                                    className="ui white button"
+                                    type="button"
+                                    // onClick={() => viewLeaderBoard()}
+                                  >
+                                    <Link
+                                      to={{
+                                        pathname: '/editreminder',
+                                        state: {
+                                          remId: reminder.id
+                                        }
+                                      }}
+                                    >
+                                      Edit Reminder
+                                    </Link>
+                                  </button>
                                 </div>
                               )
                             })
@@ -379,7 +428,7 @@ class UserHome extends Component {
                         </div>
                       </div>
                     ) : (
-                      <div>No Events</div>
+                      <div />
                     )}
                   </div>
                 )
@@ -458,6 +507,22 @@ class UserHome extends Component {
                                         >
                                           Remove Reminder
                                         </div>
+                                        <button
+                                          className="ui white button"
+                                          type="button"
+                                          // onClick={() => viewLeaderBoard()}
+                                        >
+                                          <Link
+                                            to={{
+                                              pathname: '/editreminder',
+                                              state: {
+                                                remId: reminder.id
+                                              }
+                                            }}
+                                          >
+                                            Edit Reminder
+                                          </Link>
+                                        </button>
                                       </div>
                                     )
                                   })
@@ -468,7 +533,21 @@ class UserHome extends Component {
                             ) : (
                               <div className="item">
                                 <div className="right floated content">
-                                  <div className="ui button">Complete</div>
+                                  {data.task.complete === true ? (
+                                    <div />
+                                  ) : (
+                                    <div
+                                      className="ui button"
+                                      onClick={() =>
+                                        this.completeTask(
+                                          data.task.id,
+                                          data.task
+                                        )
+                                      }
+                                    >
+                                      Complete
+                                    </div>
+                                  )}
                                   <div
                                     className="ui button"
                                     onClick={() =>

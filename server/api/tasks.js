@@ -23,8 +23,19 @@ router.post('/', async function(req, res, next) {
 })
 
 // matches PUT requests to /api/tasks/:taskId
-router.put('/:taskId', function(req, res, next) {
+router.put('/:taskId', async function(req, res, next) {
   /* etc */
+  try {
+    const task = await Task.findOne({
+      where: {
+        id: req.params.taskId
+      }
+    })
+    task.update(req.body)
+    res.json(task)
+  } catch (error) {
+    next(error)
+  }
 })
 // matches DELETE requests to /api/tasks/:taskId
 router.delete('/:taskId', function(req, res, next) {

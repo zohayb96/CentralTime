@@ -16,7 +16,7 @@ class AddEvent extends Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleChangeStartDate = this.handleChangeStartDate.bind(this)
-    this.handleChangeEndDate = this.handleChangeStartDate.bind(this)
+    this.handleChangeEndDate = this.handleChangeEndDate.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -57,7 +57,6 @@ class AddEvent extends Component {
     this.setState({
       endDate: date
     })
-    console.log(this.state)
   }
 
   render() {

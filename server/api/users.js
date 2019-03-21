@@ -13,3 +13,17 @@ router.get('/', async (req, res, next) => {
     next(err)
   }
 })
+
+router.put('/:userId', async function(req, res, next) {
+  try {
+    const editUser = await User.findOne({
+      where: {
+        id: req.params.userId
+      }
+    })
+    editUser.update(req.body)
+    res.json(editUser)
+  } catch (error) {
+    next(error)
+  }
+})
